@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Desafio jogos 4</string>
+    <string name="email_hint">Email</string>
+    <string name="remember_checkbox_label">Remember</string>
+    <string name="log_in_label">LOG IN</string>
+    <string name="create_account_label">Create account</string>
+    <string name="password_hint">Password</string>
+    <string name="repeat_password_hint">Repeat password</string>
 </resources>
