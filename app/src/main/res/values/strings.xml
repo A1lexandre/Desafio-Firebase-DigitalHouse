@@ -7,4 +7,6 @@
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
     <string name="name_hint">Name</string>
+    <string name="description_label">Description</string>
+    <string name="Created_at_label">Created at</string>
 </resources>
