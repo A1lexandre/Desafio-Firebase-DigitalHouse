@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import com.android.desafiojogos4.R
 import com.android.desafiojogos4.databinding.ActivityUserRegistrationBinding
+import com.android.desafiojogos4.model.UserRegistration
 import com.android.desafiojogos4.validation.Validation
 import com.android.desafiojogos4.validation.Validation.Companion.EMAIL
 import com.android.desafiojogos4.validation.Validation.Companion.EQUAL
@@ -34,25 +35,36 @@ class UserRegistrationActivity : AppCompatActivity() {
 
     private fun setupButtonListeners() = with(binding) {
 
+        var check: Boolean? = null
+
         btnCreateAccount.setOnClickListener {
-            checkField(tilName, tietName, listOf(REQUIRED))
-            checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL))
-            checkField(tilPassword, tietPassword, listOf(REQUIRED, MIN_LENGTH), 6)
-            if (!Validation.isEqual(tietRepeatPassword, tietPassword))
-                checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED, EQUAL))
-            else
-                checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED))
+
+            if (checkField(tilName, tietName, listOf(REQUIRED)) &&
+                    checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL)) &&
+                    checkField(tilPassword, tietPassword, listOf(REQUIRED, MIN_LENGTH), 6) &&
+                    checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED, EQUAL)))
+                        saveUser(UserRegistration(tietName.text.toString(), tietEmail.text.toString(),
+                            tietPassword.text.toString()))
+
         }
     }
 
-    private fun checkField(container: TextInputLayout, field: EditText, errors: List<String>, min_length: Int = 0) {
+    private fun saveUser(user: UserRegistration) {
+
+    }
+
+    private fun checkField(container: TextInputLayout, field: EditText, errors: List<String>, min_length: Int = 0): Boolean {
         val errorsList = Validation.checkValidation(field, errors, min_length)
-        if (errorsList.isNotEmpty())
+        if (errorsList.isNotEmpty()) {
             container.error = Validation.getErrorMessage(errorsList, min_length)
+            return false
+        }
         field.doOnTextChanged { _, _, _, _ ->
             if (container.isErrorEnabled)
                 container.error = null
         }
+
+        return true
     }
 
 }
