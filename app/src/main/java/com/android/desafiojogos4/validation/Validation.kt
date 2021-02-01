@@ -5,7 +5,7 @@ import android.widget.EditText
 class Validation {
 
     companion object {
-        fun checkValidation(field: EditText, errors: List<String>, min_length: Int, field2: EditText? = null): ArrayList<String> {
+        fun checkValidation(field: EditText, errors: List<String>, min_length: Int, field2: EditText?): ArrayList<String> {
             val catchedErrors = arrayListOf<String>()
             for (error in errors) {
                 when(error) {
@@ -22,7 +22,9 @@ class Validation {
                             catchedErrors.add(MIN_LENGTH)
                     }
                     EQUAL -> {
-                        if (field.text.toString() == field2?.text.toString())
+                        val pass: String = field2?.text?.toString()?.trim() ?: ""
+                        val cpass: String = field.text.toString().trim()
+                        if (!pass.equals(cpass))
                             catchedErrors.add(EQUAL)
                     }
                 }
