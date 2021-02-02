@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.desafiojogos4.api.FirebaseResponse
 import com.android.desafiojogos4.business.UserBusiness
-import com.android.desafiojogos4.model.UserLogin
-import com.android.desafiojogos4.model.UserRegistration
+import com.android.desafiojogos4.model.user.UserLogin
+import com.android.desafiojogos4.model.user.UserRegistration
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {

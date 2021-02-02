@@ -9,4 +9,8 @@
     <string name="name_hint">Name</string>
     <string name="description_label">Description</string>
     <string name="Created_at_label">Created at</string>
+    <string name="search_games_label">Search Games</string>
+    <string name="add_game_description">Add new game button</string>
+    <string name="content_description_start_icon">search icon</string>
+    <string name="no_added_game_label">No games added yet.</string>
 </resources>

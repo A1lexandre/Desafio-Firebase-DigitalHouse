@@ -9,7 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.android.desafiojogos4.R
 import com.android.desafiojogos4.databinding.ActivityUserRegistrationBinding
-import com.android.desafiojogos4.model.UserRegistration
+import com.android.desafiojogos4.model.user.UserRegistration
 import com.android.desafiojogos4.validation.Validation
 import com.android.desafiojogos4.validation.Validation.Companion.EMAIL
 import com.android.desafiojogos4.validation.Validation.Companion.EQUAL
@@ -17,7 +17,6 @@ import com.android.desafiojogos4.validation.Validation.Companion.MIN_LENGTH
 import com.android.desafiojogos4.validation.Validation.Companion.REQUIRED
 import com.android.desafiojogos4.view.viewmodel.UserViewModel
 import com.google.android.material.textfield.TextInputLayout
-import com.google.errorprone.annotations.RequiredModifiers
 
 class UserRegistrationActivity : AppCompatActivity() {
 
@@ -50,8 +49,10 @@ class UserRegistrationActivity : AppCompatActivity() {
                     checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED, EQUAL), 0, tietPassword))
 
             if (!isFormValid.contains(false))
-                saveUser(UserRegistration(tietName.text.toString(), tietEmail.text.toString(),
-                        tietPassword.text.toString()))
+                saveUser(
+                    UserRegistration(tietName.text.toString(), tietEmail.text.toString(),
+                        tietPassword.text.toString())
+                )
 
         }
     }

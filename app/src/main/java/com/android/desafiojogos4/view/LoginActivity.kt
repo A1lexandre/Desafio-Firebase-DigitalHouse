@@ -3,14 +3,13 @@ package com.android.desafiojogos4.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.android.desafiojogos4.R
 import com.android.desafiojogos4.databinding.ActivityLoginBinding
-import com.android.desafiojogos4.model.UserLogin
+import com.android.desafiojogos4.model.user.UserLogin
 import com.android.desafiojogos4.validation.Validation
 import com.android.desafiojogos4.validation.Validation.Companion.EMAIL
 import com.android.desafiojogos4.validation.Validation.Companion.REQUIRED

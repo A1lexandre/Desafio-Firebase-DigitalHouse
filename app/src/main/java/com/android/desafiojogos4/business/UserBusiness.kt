@@ -1,8 +1,8 @@
 package com.android.desafiojogos4.business
 
 import com.android.desafiojogos4.api.FirebaseResponse
-import com.android.desafiojogos4.model.UserLogin
-import com.android.desafiojogos4.model.UserRegistration
+import com.android.desafiojogos4.model.user.UserLogin
+import com.android.desafiojogos4.model.user.UserRegistration
 import com.android.desafiojogos4.repository.UserRepository
 
 class UserBusiness {
