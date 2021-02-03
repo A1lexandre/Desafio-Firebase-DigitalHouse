@@ -10,7 +10,8 @@ import kotlinx.coroutines.launch
 
 class GameViewModel: ViewModel() {
 
-    val gameSucess = MutableLiveData<List<Game>>()
+    val getGameSucess = MutableLiveData<List<Game>>()
+    val gameSucess = MutableLiveData<String>()
     val gameFailure = MutableLiveData<String>()
 
     private val gameBusiness by lazy {
@@ -21,7 +22,7 @@ class GameViewModel: ViewModel() {
         viewModelScope.launch {
             when(val response = gameBusiness.getGames()) {
                 is FirebaseResponse.OnSuccess -> {
-                    gameSucess.postValue(
+                    getGameSucess.postValue(
                         (response.data as? List<Game>) ?: mutableListOf<Game>()
                     )
                 }
@@ -33,5 +34,23 @@ class GameViewModel: ViewModel() {
             }
         }
     }
+
+    fun saveGame(game: Game) {
+        viewModelScope.launch {
+            when(val response = gameBusiness.saveGame(game)) {
+                is FirebaseResponse.OnSuccess -> {
+                    gameSucess.postValue(
+                        response.data as String
+                    )
+                }
+                is FirebaseResponse.OnFailure -> {
+                    gameFailure.postValue(
+                        response.message
+                    )
+                }
+            }
+        }
+    }
+
 
 }

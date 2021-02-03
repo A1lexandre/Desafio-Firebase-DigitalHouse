@@ -8,6 +8,16 @@
     android:background="@drawable/kratos_wallpaper"
     tools:context=".view.AddEditGameActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@drawable/pink_circle"
+        android:layout_marginTop="75dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
+        android:src="@drawable/ic_baseline_add_a_photo" />
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,26 +27,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:paddingTop="20dp"
-            android:orientation="vertical">
+            android:paddingTop="85dp"
+            android:paddingEnd="15dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                app:boxBackgroundColor="@color/white"
-                android:hint="@string/name_hint">
+                android:hint="@string/name_hint"
+                app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
                     android:textColor="@color/grass_green"
-                    android:textSize="20sp"
-                    android:inputType="textEmailAddress"/>
+                    android:textSize="20sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,16 +55,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                app:boxBackgroundColor="@color/white"
-                android:hint="@string/Created_at_label">
+                android:hint="@string/Created_at_label"
+                app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietYear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textColor="@color/grass_green"
-                    android:textSize="20sp"
-                    android:inputType="number"/>
+                    android:textSize="20sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,29 +73,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                app:boxBackgroundColor="@color/white"
-                android:hint="@string/description_label">
+                android:hint="@string/description_label"
+                app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietDescription"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:inputType="text"
                     android:textColor="@color/grass_green"
-                    android:textSize="20sp"
-                    android:inputType="text"/>
+                    android:textSize="20sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCreateAccount"
+                android:id="@+id/btnAddUpdateGame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/create_account_label"
-                android:textColor="@color/white"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:textSize="20sp"
-                android:background="@drawable/default_button_background"/>
+                android:background="@drawable/default_button_background"
+                android:text="@string/add_update_label"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

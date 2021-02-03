@@ -1,11 +1,13 @@
 package com.android.desafiojogos4.validation
 
 import android.widget.EditText
+import androidx.core.widget.doOnTextChanged
+import com.google.android.material.textfield.TextInputLayout
 
 class Validation {
 
     companion object {
-        fun checkValidation(field: EditText, errors: List<String>, min_length: Int, field2: EditText?): ArrayList<String> {
+        private fun checkValidation(field: EditText, errors: List<String>, min_length: Int, field2: EditText?): ArrayList<String> {
             val catchedErrors = arrayListOf<String>()
             for (error in errors) {
                 when(error) {
@@ -32,7 +34,7 @@ class Validation {
             return catchedErrors
         }
 
-        fun getErrorMessage(errors: ArrayList<String>, min_length: Int): String {
+        private fun getErrorMessage(errors: ArrayList<String>, min_length: Int): String {
             for (error in errors) {
                 when(error) {
                     REQUIRED ->
@@ -46,6 +48,20 @@ class Validation {
                 }
             }
             return ""
+        }
+
+        fun checkField(container: TextInputLayout, field: EditText, errors: List<String>, min_length: Int = 0, field2: EditText? = null): Boolean {
+            val errorsList = checkValidation(field, errors, min_length, field2)
+            field.doOnTextChanged { _, _, _, _ ->
+                if (container.isErrorEnabled)
+                    container.error = null
+            }
+            if (errorsList.isNotEmpty()) {
+                container.error = getErrorMessage(errorsList, min_length)
+                return false
+            }
+
+            return true
         }
 
         const val REQUIRED = "required"

@@ -43,10 +43,10 @@ class UserRegistrationActivity : AppCompatActivity() {
 
         btnCreateAccount.setOnClickListener {
 
-            val isFormValid = listOf(checkField(tilName, tietName, listOf(REQUIRED)),
-                    checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL)),
-                    checkField(tilPassword, tietPassword, listOf(REQUIRED, MIN_LENGTH), 6),
-                    checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED, EQUAL), 0, tietPassword))
+            val isFormValid = listOf(Validation.checkField(tilName, tietName, listOf(REQUIRED)),
+                    Validation.checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL)),
+                    Validation.checkField(tilPassword, tietPassword, listOf(REQUIRED, MIN_LENGTH), 6),
+                    Validation.checkField(tilRepeatPassword, tietRepeatPassword, listOf(REQUIRED, EQUAL), 0, tietPassword))
 
             if (!isFormValid.contains(false))
                 saveUser(
@@ -70,20 +70,6 @@ class UserRegistrationActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, it ?: "Falhou", Toast.LENGTH_SHORT).show()
         })
 
-    }
-
-    private fun checkField(container: TextInputLayout, field: EditText, errors: List<String>, min_length: Int = 0, field2: EditText? = null): Boolean {
-        val errorsList = Validation.checkValidation(field, errors, min_length, field2)
-        field.doOnTextChanged { _, _, _, _ ->
-            if (container.isErrorEnabled)
-                container.error = null
-        }
-        if (errorsList.isNotEmpty()) {
-            container.error = Validation.getErrorMessage(errorsList, min_length)
-            return false
-        }
-
-        return true
     }
 
 }

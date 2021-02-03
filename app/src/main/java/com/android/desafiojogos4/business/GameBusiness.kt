@@ -24,4 +24,15 @@ class GameBusiness {
             }
         }
     }
+
+    suspend fun saveGame(game: Game): FirebaseResponse {
+        return when (val response = gameRepository.saveGame(game)) {
+            is FirebaseResponse.OnSuccess -> {
+                FirebaseResponse.OnSuccess("${response.data} foi adicionado!")
+            }
+            is FirebaseResponse.OnFailure -> {
+                response
+            }
+        }
+    }
 }

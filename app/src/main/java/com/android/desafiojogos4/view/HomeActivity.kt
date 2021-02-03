@@ -1,5 +1,6 @@
 package com.android.desafiojogos4.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -24,26 +25,21 @@ class HomeActivity : AppCompatActivity() {
 
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-        //getGames()
-        binding.rvGameList.apply {
-            layoutManager = GridLayoutManager(this@HomeActivity, 2)
-            adapter = GameAdapter(getGameList())
-        }
-        binding.loadingView.visibility = View.GONE
+        setupButtonListeners()
     }
 
-    private fun getGameList(): MutableList<Game> {
-        val list = mutableListOf<Game>()
-        for(i in 1..10) {
-            list.add(Game("0", "Mortal Kombat", "SomeDescription", 2019, "0"))
+    private fun setupButtonListeners() {
+
+        binding.btnAddGame.setOnClickListener{
+            startActivity(Intent(this@HomeActivity, AddEditGameActivity::class.java))
         }
-        return list
+
     }
 
     private fun getGames() {
         gameViewModel.getGames()
 
-        gameViewModel.gameSucess.observe(this, {
+        gameViewModel.getGameSucess.observe(this, {
             binding.loadingView.visibility = View.GONE
             it?.let { list ->
                 if(list.isEmpty()) {
@@ -58,5 +54,10 @@ class HomeActivity : AppCompatActivity() {
             binding.loadingView.visibility = View.GONE
             Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getGames()
     }
 }

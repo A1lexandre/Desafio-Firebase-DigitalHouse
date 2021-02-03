@@ -54,8 +54,8 @@ class LoginActivity : AppCompatActivity() {
 
         btnSignIn.setOnClickListener {
 
-            val isFormValid = listOf<Boolean>(checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL)),
-                checkField(tilPassword, tietPassword, listOf(REQUIRED)))
+            val isFormValid = listOf<Boolean>(Validation.checkField(tilEmail, tietEmail, listOf(REQUIRED, EMAIL)),
+                Validation.checkField(tilPassword, tietPassword, listOf(REQUIRED)))
 
             if(!isFormValid.contains(false))
                 loginUser(UserLogin(tietEmail.text.toString().trim(), tietPassword.text.toString().trim()))
@@ -76,17 +76,4 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun checkField(container: TextInputLayout, field: EditText, errors: List<String>, min_length: Int = 0, field2: EditText? = null): Boolean {
-        val errorsList = Validation.checkValidation(field, errors, min_length, field2)
-        field.doOnTextChanged { _, _, _, _ ->
-            if (container.isErrorEnabled)
-                container.error = null
-        }
-        if (errorsList.isNotEmpty()) {
-            container.error = Validation.getErrorMessage(errorsList, min_length)
-            return false
-        }
-        return true
-    }
-    
 }
