@@ -1,7 +1,9 @@
 package com.android.desafiojogos4.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -28,14 +30,21 @@ class AddEditGameActivity : AppCompatActivity() {
     }
 
     private fun setupButtonClickListeners() {
-        binding.btnAddUpdateGame.setOnClickListener {
-            with(binding) {
+
+        with(binding) {
+            btnAddUpdateGame.setOnClickListener {
                 val isFormValid = listOf<Boolean>(Validation.checkField(tilName, tietName, listOf(REQUIRED)))
 
                 if (!isFormValid.contains(false))
-                    saveGame(Game(tietName.text.toString(), tietDescription.text.toString(), tietYear.text.toString().toInt()))
+                    saveGame(Game(tietName.text.toString().trim(), tietDescription.text.toString().trim(), tietYear.text.toString().trim().toInt()))
             }
+
+            profileImage.setOnClickListener {
+                openGallery()
+            }
+
         }
+
     }
 
     private fun saveGame(game: Game) = with(gameViewModel) {
@@ -49,5 +58,22 @@ class AddEditGameActivity : AppCompatActivity() {
         gameFailure.observe(this@AddEditGameActivity, {
             Toast.makeText(this@AddEditGameActivity, it, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            val imageUri = data?.data
+            binding.profileImage.setImageURI(imageUri)
+        }
+    }
+
+    companion object {
+        const val PICK_IMAGE = 23
     }
 }

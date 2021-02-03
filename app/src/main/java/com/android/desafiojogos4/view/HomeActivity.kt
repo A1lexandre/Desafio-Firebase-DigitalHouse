@@ -17,6 +17,9 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var gameViewModel: GameViewModel
+    private val gameAdapter by lazy {
+        GameAdapter(mutableListOf())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +31,18 @@ class HomeActivity : AppCompatActivity() {
         setupButtonListeners()
     }
 
+    private fun setupRecyclerView(list: MutableList<Game>) {
+        binding.rvGameList.apply {
+            layoutManager = GridLayoutManager(this@HomeActivity, 2)
+            adapter = GameAdapter(list)
+        }
+    }
+
     private fun setupButtonListeners() {
 
         binding.btnAddGame.setOnClickListener{
             startActivity(Intent(this@HomeActivity, AddEditGameActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_down, R.anim.stay)
         }
 
     }
@@ -39,13 +50,14 @@ class HomeActivity : AppCompatActivity() {
     private fun getGames() {
         gameViewModel.getGames()
 
-        gameViewModel.getGameSucess.observe(this, {
+        gameViewModel.getGameSucess.observe(this, { list ->
             binding.loadingView.visibility = View.GONE
-            it?.let { list ->
-                if(list.isEmpty()) {
+            list?.let { it as MutableList<Game>
+                if(it.isEmpty()) {
                     binding.emptySaying.visibility = View.VISIBLE
                 } else {
                     binding.emptySaying.visibility = View.GONE
+                    setupRecyclerView(it)
                 }
             }
         })

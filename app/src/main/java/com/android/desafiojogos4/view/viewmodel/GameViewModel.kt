@@ -23,7 +23,7 @@ class GameViewModel: ViewModel() {
             when(val response = gameBusiness.getGames()) {
                 is FirebaseResponse.OnSuccess -> {
                     getGameSucess.postValue(
-                        (response.data as? List<Game>) ?: mutableListOf<Game>()
+                        response.data as? List<Game>
                     )
                 }
                 is FirebaseResponse.OnFailure -> {
