@@ -5,12 +5,14 @@ data class Game(
     val description: String,
     val launchYear: Int,
     val userId: String = "",
-    val ownerName: String = ""
+    val ownerName: String = "",
+    val imageUrl: String = ""
 ) {
     constructor(): this(
         "",
         "",
         0,
+        "",
         "",
         ""
     )

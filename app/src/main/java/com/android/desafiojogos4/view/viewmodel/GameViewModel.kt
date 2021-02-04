@@ -1,5 +1,6 @@
 package com.android.desafiojogos4.view.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,9 +36,9 @@ class GameViewModel: ViewModel() {
         }
     }
 
-    fun saveGame(game: Game) {
+    fun saveGame(game: Game, image: Uri?) {
         viewModelScope.launch {
-            when(val response = gameBusiness.saveGame(game)) {
+            when(val response = gameBusiness.saveGame(game, image)) {
                 is FirebaseResponse.OnSuccess -> {
                     gameSucess.postValue(
                         response.data as String

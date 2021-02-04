@@ -17,9 +17,6 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var gameViewModel: GameViewModel
-    private val gameAdapter by lazy {
-        GameAdapter(mutableListOf())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +49,12 @@ class HomeActivity : AppCompatActivity() {
 
         gameViewModel.getGameSucess.observe(this, { list ->
             binding.loadingView.visibility = View.GONE
-            list?.let { it as MutableList<Game>
-                if(it.isEmpty()) {
+                if(list.isEmpty()) {
                     binding.emptySaying.visibility = View.VISIBLE
                 } else {
                     binding.emptySaying.visibility = View.GONE
-                    setupRecyclerView(it)
+                    setupRecyclerView(list as MutableList<Game>)
                 }
-            }
         })
 
         gameViewModel.gameFailure.observe(this, {

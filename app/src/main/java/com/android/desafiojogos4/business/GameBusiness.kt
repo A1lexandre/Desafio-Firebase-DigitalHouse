@@ -1,5 +1,6 @@
 package com.android.desafiojogos4.business
 
+import android.net.Uri
 import com.android.desafiojogos4.api.FirebaseResponse
 import com.android.desafiojogos4.model.game.Game
 import com.android.desafiojogos4.repository.GameRepository
@@ -25,8 +26,8 @@ class GameBusiness {
         }
     }
 
-    suspend fun saveGame(game: Game): FirebaseResponse {
-        return when (val response = gameRepository.saveGame(game)) {
+    suspend fun saveGame(game: Game, image: Uri?): FirebaseResponse {
+        return when (val response = gameRepository.saveGame(game, image)) {
             is FirebaseResponse.OnSuccess -> {
                 FirebaseResponse.OnSuccess("${response.data} foi adicionado!")
             }

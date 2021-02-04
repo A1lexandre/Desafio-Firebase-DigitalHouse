@@ -23,7 +23,7 @@ class GameAdapter(var list: MutableList<Game>): RecyclerView.Adapter<GameAdapter
 
     inner class ViewHolder(val binding: GameCardBinding): RecyclerView.ViewHolder(binding.root) {
         fun binding(game: Game) = with(binding) {
-            Glide.with(root.context).load("https://images.alphacoders.com/989/989547.png").placeholder(R.drawable.game_icon).into(imGameImage)
+            Glide.with(root.context).load(game.imageUrl).placeholder(R.drawable.game_icon).into(imGameImage)
             tvGameName.text = game.name
             tvGameLaunchYear.text = game.launchYear.toString()
         }

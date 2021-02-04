@@ -1,6 +1,7 @@
 package com.android.desafiojogos4.view
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,6 +19,7 @@ class AddEditGameActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityAddEditGameBinding
     lateinit var gameViewModel: GameViewModel
+    var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class AddEditGameActivity : AppCompatActivity() {
 
         with(binding) {
             btnAddUpdateGame.setOnClickListener {
-                val isFormValid = listOf<Boolean>(Validation.checkField(tilName, tietName, listOf(REQUIRED)))
+                val isFormValid = listOf<Boolean>(Validation.checkField(tilName, tietName, listOf(REQUIRED)), Validation.checkField(tilYear, tietYear, listOf(REQUIRED)))
 
                 if (!isFormValid.contains(false))
                     saveGame(Game(tietName.text.toString().trim(), tietDescription.text.toString().trim(), tietYear.text.toString().trim().toInt()))
@@ -48,7 +50,7 @@ class AddEditGameActivity : AppCompatActivity() {
     }
 
     private fun saveGame(game: Game) = with(gameViewModel) {
-        saveGame(game)
+        saveGame(game, imageUri)
 
         gameSucess.observe(this@AddEditGameActivity, {
             Toast.makeText(this@AddEditGameActivity, it, Toast.LENGTH_SHORT).show()
@@ -68,9 +70,14 @@ class AddEditGameActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            val imageUri = data?.data
+            imageUri = data?.data
             binding.profileImage.setImageURI(imageUri)
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_down)
     }
 
     companion object {
