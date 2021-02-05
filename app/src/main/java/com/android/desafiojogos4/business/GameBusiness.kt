@@ -47,4 +47,13 @@ class GameBusiness {
             }
         }
     }
+
+    fun signOut(): FirebaseResponse {
+        return when(val response = gameRepository.signOut()) {
+            is FirebaseResponse.OnSuccess ->
+                FirebaseResponse.OnSuccess("Até logo!")
+            is FirebaseResponse.OnFailure ->
+                response
+        }
+    }
 }

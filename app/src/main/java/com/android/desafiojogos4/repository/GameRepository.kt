@@ -1,11 +1,11 @@
 package com.android.desafiojogos4.repository
 
 import android.net.Uri
-import android.util.Log
 import com.android.desafiojogos4.api.FirebaseResponse
 import com.android.desafiojogos4.model.game.Game
 import com.android.desafiojogos4.model.user.User
 import com.android.desafiojogos4.utils.Constants.firebase.ERRO_GET_GAMES
+import com.android.desafiojogos4.utils.Constants.firebase.ERRO_LOGOUT
 import com.android.desafiojogos4.utils.Constants.firebase.ERRO_SAVE_GAME
 import com.android.desafiojogos4.utils.Constants.firebase.GAMES
 import com.android.desafiojogos4.utils.Constants.firebase.USERS
@@ -16,9 +16,6 @@ import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
-import java.lang.String.format
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 
 class GameRepository {
 
@@ -108,7 +105,6 @@ class GameRepository {
                 }
                 userRef = db.collection(USERS).document(firebaseUser.uid).get().await()
                 val user = userRef.toObject(User::class.java)
-//                db.collection(GAMES).document(game.id).set(Game(game.name, game.description, game.launchYear, firebaseUser.uid, user?.name ?: "", imageUrl ?: game.imageUrl , game.id))
                   db.collection(GAMES).document(game.id).update(
                           hashMapOf<String, Any>(
                                   "name" to game.name,
@@ -129,6 +125,15 @@ class GameRepository {
             resp = FirebaseResponse.OnFailure(e.localizedMessage ?: ERRO_SAVE_GAME)
         }
         return resp
+    }
+
+    fun signOut(): FirebaseResponse {
+        return try {
+            auth.signOut()
+            FirebaseResponse.OnSuccess()
+        } catch(e: Exception) {
+            FirebaseResponse.OnFailure(e.localizedMessage ?: ERRO_LOGOUT)
+        }
     }
 
     suspend fun getGameCollectionSize(id: String) : Int {

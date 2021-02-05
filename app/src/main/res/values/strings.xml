@@ -14,4 +14,5 @@
     <string name="content_description_start_icon">search icon</string>
     <string name="no_added_game_label">No games added yet.</string>
     <string name="add_update_label">SAVE GAME</string>
+    <string name="signout_button_label">SAIR</string>
 </resources>

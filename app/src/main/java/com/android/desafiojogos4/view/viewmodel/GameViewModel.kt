@@ -70,4 +70,17 @@ class GameViewModel: ViewModel() {
         }
     }
 
+    fun signOut() {
+        when(val response = gameBusiness.signOut()) {
+            is FirebaseResponse.OnSuccess ->
+                gameSucess.postValue(
+                        response.data as String
+                )
+            is FirebaseResponse.OnFailure ->
+                gameFailure.postValue(
+                        response.message
+                )
+        }
+    }
+
 }

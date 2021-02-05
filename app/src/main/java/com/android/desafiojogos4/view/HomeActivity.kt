@@ -40,11 +40,25 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupButtonListeners() {
+    private fun setupButtonListeners() = with(binding) {
 
-        binding.btnAddGame.setOnClickListener{
+        btnAddGame.setOnClickListener{
             startActivity(Intent(this@HomeActivity, AddEditGameActivity::class.java))
             overridePendingTransition(R.anim.slide_in_down, R.anim.stay)
+        }
+
+        btnSignOut.setOnClickListener {
+            gameViewModel.signOut()
+
+            gameViewModel.gameSucess.observe(this@HomeActivity, {
+                Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+                finish()
+            })
+
+            gameViewModel.gameSucess.observe(this@HomeActivity, {
+                Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
+            })
         }
 
     }
