@@ -11,6 +11,7 @@ import com.android.desafiojogos4.R
 import com.android.desafiojogos4.adapter.GameAdapter
 import com.android.desafiojogos4.databinding.ActivityHomeBinding
 import com.android.desafiojogos4.model.game.Game
+import com.android.desafiojogos4.utils.Constants.firebase.GAME
 import com.android.desafiojogos4.view.viewmodel.GameViewModel
 
 class HomeActivity : AppCompatActivity() {
@@ -31,7 +32,11 @@ class HomeActivity : AppCompatActivity() {
     private fun setupRecyclerView(list: MutableList<Game>) {
         binding.rvGameList.apply {
             layoutManager = GridLayoutManager(this@HomeActivity, 2)
-            adapter = GameAdapter(list)
+            adapter = GameAdapter(list) {
+                val gameDetail = Intent(this@HomeActivity, GameDetail::class.java)
+                gameDetail.putExtra(GAME, it)
+                startActivity(gameDetail)
+            }
         }
     }
 

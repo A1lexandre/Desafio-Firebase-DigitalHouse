@@ -5,15 +5,18 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.android.desafiojogos4.R
 import com.android.desafiojogos4.databinding.ActivityAddEditGameBinding
 import com.android.desafiojogos4.model.game.Game
+import com.android.desafiojogos4.utils.Constants.firebase.GAME
 import com.android.desafiojogos4.validation.Validation
 import com.android.desafiojogos4.validation.Validation.Companion.REQUIRED
 import com.android.desafiojogos4.view.viewmodel.GameViewModel
+import com.bumptech.glide.Glide
 
 class AddEditGameActivity : AppCompatActivity() {
 
@@ -28,7 +31,18 @@ class AddEditGameActivity : AppCompatActivity() {
 
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
+        intent.getParcelableExtra<Game>(GAME)?.let {
+            setGameInfo(it)
+        }
+
         setupButtonClickListeners()
+    }
+
+    private fun setGameInfo(game: Game) = with(binding) {
+        Glide.with(root.context).load(game.imageUrl).placeholder(R.drawable.game_icon).into(profileImage)
+        tietName.text = Editable.Factory.getInstance().newEditable(game.name)
+        tietYear.text = Editable.Factory.getInstance().newEditable(game.launchYear.toString())
+        tietDescription.text = Editable.Factory.getInstance().newEditable(game.description)
     }
 
     private fun setupButtonClickListeners() {

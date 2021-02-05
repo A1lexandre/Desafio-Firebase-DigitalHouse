@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".view.viewmodel.GameDetail">
+    tools:context=".view.GameDetail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,6 +20,26 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_edit_24"
+            app:layout_constraintTop_toBottomOf="@id/imGamePicture"
+            app:layout_constraintBottom_toTopOf="@id/basic_info_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvGameNamePic"
@@ -56,6 +76,13 @@
                 tools:text="Lançamento: 2016"
                 android:textSize="22sp"
                 android:textColor="@color/gray" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOwnerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Adicionado por: Alexandre Nascimento Araújo"
+                android:layout_gravity="end"/>
 
         </LinearLayout>
 
