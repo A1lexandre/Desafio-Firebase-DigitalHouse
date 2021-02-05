@@ -1,5 +1,6 @@
 package com.android.desafiojogos4.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class GameAdapter(var list: MutableList<Game>,
             root.setOnClickListener{
                 onClickItem(game)
             }
+            Log.i("list", list.toString())
         }
     }
 }

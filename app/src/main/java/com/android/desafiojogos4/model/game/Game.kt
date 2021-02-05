@@ -10,12 +10,14 @@ data class Game(
     val launchYear: Int,
     val userId: String = "",
     val ownerName: String = "",
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val id: String = ""
 ): Parcelable {
     constructor(): this(
         "",
         "",
         0,
+        "",
         "",
         "",
         ""

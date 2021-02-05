@@ -53,5 +53,21 @@ class GameViewModel: ViewModel() {
         }
     }
 
+    fun updateGame(game: Game, image: Uri?) {
+        viewModelScope.launch {
+            when(val response = gameBusiness.updateGame(game, image)) {
+                is FirebaseResponse.OnSuccess -> {
+                    gameSucess.postValue(
+                            response.data as String
+                    )
+                }
+                is FirebaseResponse.OnFailure -> {
+                    gameFailure.postValue(
+                            response.message
+                    )
+                }
+            }
+        }
+    }
 
 }

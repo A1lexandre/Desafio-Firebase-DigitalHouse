@@ -1,6 +1,7 @@
 package com.android.desafiojogos4.repository
 
 import android.net.Uri
+import android.util.Log
 import com.android.desafiojogos4.api.FirebaseResponse
 import com.android.desafiojogos4.model.game.Game
 import com.android.desafiojogos4.model.user.User
@@ -54,9 +55,10 @@ class GameRepository {
         lateinit var userRef: DocumentSnapshot
         var imageUrl = ""
         try {
-            auth.currentUser?.let {
-                val imageRef = storage.reference.child("games/${game.name.trim()}.jpg")
+            auth.currentUser?.let { firebaseUser ->
+                val collectionSize = getGameCollectionSize(firebaseUser.uid)
                 image?.let { imageUri ->
+                    val imageRef = storage.reference.child("games/${firebaseUser.uid}${collectionSize + 1}.jpg")
                     var ok = false
                     imageRef.putFile(imageUri)
                             .addOnSuccessListener {
@@ -68,9 +70,9 @@ class GameRepository {
                                     imageUrl = it.toString()
                                 }.await()
                 }
-                userRef = db.collection(USERS).document(it.uid).get().await()
+                userRef = db.collection(USERS).document(firebaseUser.uid).get().await()
                 val user = userRef.toObject(User::class.java)
-                db.collection(GAMES).add(Game(game.name, game.description, game.launchYear, it.uid, user?.name ?: "", imageUrl))
+                db.collection(GAMES).document("${firebaseUser.uid}${collectionSize + 1}").set(Game(game.name, game.description, game.launchYear, firebaseUser.uid, user?.name ?: "", imageUrl, "${firebaseUser.uid}${collectionSize + 1}"))
                     .addOnCompleteListener { task ->
                         if(task.isSuccessful)
                             resp = FirebaseResponse.OnSuccess(game.name)
@@ -83,6 +85,61 @@ class GameRepository {
             resp = FirebaseResponse.OnFailure(e.localizedMessage ?: ERRO_SAVE_GAME)
         }
         return resp
+    }
+
+    suspend fun updateGame(game: Game, image: Uri?): FirebaseResponse {
+        lateinit var resp: FirebaseResponse
+        lateinit var userRef: DocumentSnapshot
+        var imageUrl: String? = null
+        try {
+            auth.currentUser?.let { firebaseUser ->
+                image?.let { imageUri ->
+                    val imageRef = storage.reference.child("games/${game.id}.jpg")
+                    var ok = false
+                    imageRef.putFile(imageUri)
+                            .addOnSuccessListener {
+                                ok = true
+                            }.await()
+                    if(ok)
+                        imageRef.downloadUrl
+                                .addOnSuccessListener {
+                                    imageUrl = it.toString()
+                                }.await()
+                }
+                userRef = db.collection(USERS).document(firebaseUser.uid).get().await()
+                val user = userRef.toObject(User::class.java)
+//                db.collection(GAMES).document(game.id).set(Game(game.name, game.description, game.launchYear, firebaseUser.uid, user?.name ?: "", imageUrl ?: game.imageUrl , game.id))
+                  db.collection(GAMES).document(game.id).update(
+                          hashMapOf<String, Any>(
+                                  "name" to game.name,
+                                  "description" to game.description,
+                                  "launchYear" to game.launchYear,
+                                  "imageUrl" to (imageUrl ?: game.imageUrl)
+                          )
+                  )
+                        .addOnCompleteListener { task ->
+                            if(task.isSuccessful)
+                                resp = FirebaseResponse.OnSuccess(game.name)
+                            else
+                                resp = FirebaseResponse.OnFailure(task.exception?.localizedMessage ?: ERRO_SAVE_GAME)
+                        }
+                        .await()
+            }
+        } catch (e: Exception) {
+            resp = FirebaseResponse.OnFailure(e.localizedMessage ?: ERRO_SAVE_GAME)
+        }
+        return resp
+    }
+
+    suspend fun getGameCollectionSize(id: String) : Int {
+        var size = 0
+        db.collection(GAMES).whereEqualTo("userId", id).get()
+                .addOnSuccessListener {
+                    size = it.size()
+                }
+                .await()
+
+        return size
     }
 
 }

@@ -36,4 +36,15 @@ class GameBusiness {
             }
         }
     }
+
+    suspend fun updateGame(game: Game, image: Uri?): FirebaseResponse {
+        return when (val response = gameRepository.updateGame(game, image)) {
+            is FirebaseResponse.OnSuccess -> {
+                FirebaseResponse.OnSuccess("${response.data} foi atualizado!")
+            }
+            is FirebaseResponse.OnFailure -> {
+                response
+            }
+        }
+    }
 }

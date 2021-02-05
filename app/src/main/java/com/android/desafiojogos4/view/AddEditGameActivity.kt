@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,8 @@ class AddEditGameActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddEditGameBinding
     lateinit var gameViewModel: GameViewModel
     var imageUri: Uri? = null
+    var edit = false
+    private lateinit var game: Game
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,8 @@ class AddEditGameActivity : AppCompatActivity() {
 
         intent.getParcelableExtra<Game>(GAME)?.let {
             setGameInfo(it)
+            edit = true
+            game = it
         }
 
         setupButtonClickListeners()
@@ -52,7 +57,10 @@ class AddEditGameActivity : AppCompatActivity() {
                 val isFormValid = listOf<Boolean>(Validation.checkField(tilName, tietName, listOf(REQUIRED)), Validation.checkField(tilYear, tietYear, listOf(REQUIRED)))
 
                 if (!isFormValid.contains(false))
+                    if (!edit)
                     saveGame(Game(tietName.text.toString().trim(), tietDescription.text.toString().trim(), tietYear.text.toString().trim().toInt()))
+                else
+                    updateGame(Game(tietName.text.toString().trim(), tietDescription.text.toString().trim(), tietYear.text.toString().trim().toInt(), game.userId, game.ownerName, game.imageUrl, game.id))
             }
 
             profileImage.setOnClickListener {
@@ -73,7 +81,23 @@ class AddEditGameActivity : AppCompatActivity() {
 
         gameFailure.observe(this@AddEditGameActivity, {
             Toast.makeText(this@AddEditGameActivity, it, Toast.LENGTH_SHORT).show()
+            finish()
         })
+    }
+
+    private fun updateGame(game: Game) = with(gameViewModel) {
+        updateGame(game, imageUri)
+
+        gameSucess.observe(this@AddEditGameActivity, {
+            Toast.makeText(this@AddEditGameActivity, it, Toast.LENGTH_SHORT).show()
+            finish()
+        })
+
+        gameFailure.observe(this@AddEditGameActivity, {
+            Toast.makeText(this@AddEditGameActivity, it, Toast.LENGTH_SHORT).show()
+            finish()
+        })
+
     }
 
     private fun openGallery() {
