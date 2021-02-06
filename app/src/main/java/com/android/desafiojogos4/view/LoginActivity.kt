@@ -21,14 +21,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var userViewModel: UserViewModel
 
-    private val auth by lazy {
-        FirebaseAuth.getInstance()
-    }
-
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        checkUser()
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,13 +31,6 @@ class LoginActivity : AppCompatActivity() {
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         setupButtonListeners()
-    }
-
-    private fun checkUser() {
-        if (auth.currentUser !== null) {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-        }
     }
 
     private fun setupButtonListeners() = with(binding) {
