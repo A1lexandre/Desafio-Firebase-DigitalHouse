@@ -21,6 +21,11 @@ class GameAdapter(var list: MutableList<Game>,
         holder.binding(list[position])
     }
 
+    fun updateList(newList: MutableList<Game>) {
+        list = newList
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = list.size
 
     inner class ViewHolder(val binding: GameCardBinding): RecyclerView.ViewHolder(binding.root) {
